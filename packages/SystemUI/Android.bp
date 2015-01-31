@@ -440,6 +440,7 @@ android_library {
         "androidx.slice_slice-view",
     ],
     manifest: "AndroidManifest-res.xml",
+    additional_manifests: ["FortuneManifest.xml"],
 }
 
 android_library {
