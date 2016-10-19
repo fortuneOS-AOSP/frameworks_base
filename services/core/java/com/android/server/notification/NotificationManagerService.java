@@ -304,6 +304,7 @@ import android.util.Slog;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.StatsEvent;
+import android.util.TimeUtils;
 import android.util.Xml;
 import android.util.proto.ProtoOutputStream;
 import android.view.Display;
@@ -663,6 +664,7 @@ public class NotificationManagerService extends SystemService {
     @GuardedBy("mToastQueue")
     private final Set<Integer> mToastRateLimitingDisabledUids = new ArraySet<>();
     final ArrayMap<String, NotificationRecord> mSummaryByGroupKey = new ArrayMap<>();
+    final ArrayMap<String, Long> mLastSoundTimestamps = new ArrayMap<>();
 
     // True if the toast that's on top of the queue is being shown at the moment.
     @GuardedBy("mToastQueue")
@@ -3839,6 +3841,19 @@ public class NotificationManagerService extends SystemService {
             // callback from AppOpsManager.
         }
 
+        @Override
+        public void setNotificationSoundTimeout(String pkg, int uid, long timeout) {
+            checkCallerIsSystem();
+            mPreferencesHelper.setNotificationSoundTimeout(pkg, uid, timeout);
+            handleSavePolicyFile();
+        }
+
+        @Override
+        public long getNotificationSoundTimeout(String pkg, int uid) {
+            checkCallerIsSystem();
+            return mPreferencesHelper.getNotificationSoundTimeout(pkg, uid);
+        }
+
         /**
          * Updates the enabled state for notifications for the given package (and uid).
          * Additionally, this method marks the app importance as locked by the user, which
@@ -7001,6 +7016,14 @@ public class NotificationManagerService extends SystemService {
                     mTtlHelper.dump(pw, "    ");
                 }
             }
+
+            long now = SystemClock.elapsedRealtime();
+            pw.println("\n  Last notification sound timestamps:");
+            for (Map.Entry<String, Long> entry : mLastSoundTimestamps.entrySet()) {
+                pw.print("    " + entry.getKey() + " -> ");
+                TimeUtils.formatDuration(entry.getValue(), now, pw);
+                pw.println(" ago");
+            }
         }
     }
 
@@ -9081,6 +9104,24 @@ public class NotificationManagerService extends SystemService {
                         .addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
                         .putExtra(EXTRA_KEY, record.getKey()),
                 flags);
+    }
+
+    private boolean isInSoundTimeoutPeriod(NotificationRecord record) {
+        long timeoutMillis = mPreferencesHelper.getNotificationSoundTimeout(
+                record.getSbn().getPackageName(), record.getSbn().getUid());
+        if (timeoutMillis == 0) {
+            return false;
+        }
+
+        Long value = mLastSoundTimestamps.get(generateLastSoundTimeoutKey(record));
+        if (value == null) {
+            return false;
+        }
+        return SystemClock.elapsedRealtime() - value < timeoutMillis;
+    }
+
+    private String generateLastSoundTimeoutKey(NotificationRecord record) {
+        return record.getSbn().getPackageName() + "|" + record.getSbn().getUid();
     }
 
     @VisibleForTesting
