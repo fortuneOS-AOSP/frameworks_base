@@ -3,6 +3,23 @@
      Copyright (C) 2024 FortuneOS
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-
+<resources>
+    <string-array translatable="false" name="config_rebootActionsList">
+        <item>restart</item>
+        <item>reboot_recovery</item>
+        <item>reboot_bootloader</item>
+    </string-array>
+    <!-- Defines all possible global actions -->
+    <string-array translatable="false" name="values_globalActionsList">
+        <item>power</item>
+        <item>airplane</item>
+        <item>bugreport</item>
+        <item>silent</item>
+        <item>users</item>
+        <item>settings</item>
+        <item>lockdown</item>
+        <item>assist</item>
+        <item>voiceassist</item>
+        <item>restart</item>
+    </string-array>
 </resources>
