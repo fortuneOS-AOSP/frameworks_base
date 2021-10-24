@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
@@ -62,6 +63,7 @@ public class BrightnessSliderController extends ViewController<BrightnessSliderV
     private boolean mTracking;
     private final FalsingManager mFalsingManager;
     private final UiEventLogger mUiEventLogger;
+    private ImageView mIconView;
 
     private final SeekbarHapticPlugin mBrightnessSliderHapticPlugin;
     private final ActivityStarter mActivityStarter;
@@ -85,11 +87,13 @@ public class BrightnessSliderController extends ViewController<BrightnessSliderV
 
     BrightnessSliderController(
             BrightnessSliderView brightnessSliderView,
+            ImageView icon,
             FalsingManager falsingManager,
             UiEventLogger uiEventLogger,
             SeekbarHapticPlugin brightnessSliderHapticPlugin,
             ActivityStarter activityStarter) {
         super(brightnessSliderView);
+        mIconView = icon;
         mFalsingManager = falsingManager;
         mUiEventLogger = uiEventLogger;
         mBrightnessSliderHapticPlugin = brightnessSliderHapticPlugin;
@@ -103,6 +107,9 @@ public class BrightnessSliderController extends ViewController<BrightnessSliderV
         return mView;
     }
 
+    public ImageView getIconView() {
+        return mIconView;
+    }
 
     @Override
     protected void onViewAttached() {
@@ -316,8 +323,9 @@ public class BrightnessSliderController extends ViewController<BrightnessSliderV
                     mVibratorHelper,
                     mSystemClock);
             HapticSliderViewBinder.bind(viewRoot, plugin);
+            ImageView icon = (ImageView) root.findViewById(R.id.brightness_icon);
             return new BrightnessSliderController(
-                    root, mFalsingManager, mUiEventLogger, plugin, mActivityStarter);
+                    root, icon, mFalsingManager, mUiEventLogger, plugin, mActivityStarter);
         }
 
         /** Get the layout to inflate based on what slider to use */
