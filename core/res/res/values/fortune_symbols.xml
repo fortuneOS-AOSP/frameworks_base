@@ -38,8 +38,6 @@
     <java-symbol type="string" name="charging_control_notification_content_target_reached" />
 
     <!-- PixelPropUtils -->
-    <java-symbol type="array" name="gaaps_package_names" />
-    <java-symbol type="array" name="marlin_package_names" />
     <java-symbol type="string" name="build_device" />
     <java-symbol type="string" name="build_fp" />
     <java-symbol type="string" name="build_model" />
