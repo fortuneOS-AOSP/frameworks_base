@@ -16,4 +16,7 @@
 
     <!-- Location indicator -->
     <java-symbol type="drawable" name="stat_sys_location" />
+
+    <!-- These are system packages exempted from privacy indicator -->
+    <java-symbol type="array" name="config_indicatorExemptedPackageNames" />
 </resources>
