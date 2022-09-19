@@ -53,6 +53,7 @@ public class PropImitationHooks {
     private static final String PACKAGE_SETUPWIZARD = "com.google.android.setupwizard";
     private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
     private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
+    private static final String PACKAGE_NETFLIX = "com.netflix.mediaclient";
 
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
@@ -105,7 +106,7 @@ public class PropImitationHooks {
     );
 
     private static volatile String[] sCertifiedProps;
-    private static volatile String sStockFp;
+    private static volatile String sStockFp, sNetflixModel;
 
     private static volatile String sProcessName;
     private static volatile boolean sIsPixelDevice, sIsGms, sIsFinsky, sIsPhotos, sIsTablet;
@@ -127,6 +128,7 @@ public class PropImitationHooks {
 
         sCertifiedProps = res.getStringArray(R.array.config_certifiedBuildProperties);
         sStockFp = res.getString(R.string.config_stockFingerprint);
+        sNetflixModel = res.getString(R.string.config_netflixSpoofModel);
         sIsTablet = res.getBoolean(R.bool.config_spoofasTablet);
 
         sProcessName = processName;
@@ -138,6 +140,7 @@ public class PropImitationHooks {
         /* Set certified properties for GMSCore
          * Set stock fingerprint for ARCore
          * Set Pixel 9 Pro XL / Pixel Tablet for Google, ASI and GMS device configurator
+         * Set custom model for Netflix
          */
         switch (processName) {
             case PROCESS_GMS_UNSTABLE:
@@ -166,6 +169,11 @@ public class PropImitationHooks {
                     setPropValue("FINGERPRINT", sStockFp);;
                 }
                 return;
+            case PACKAGE_NETFLIX:
+                if (!sNetflixModel.isEmpty()) {
+                    dlog("Setting model to " + sNetflixModel + " for Netflix");
+                    setPropValue("MODEL", sNetflixModel);
+                }
         }
     }
 
