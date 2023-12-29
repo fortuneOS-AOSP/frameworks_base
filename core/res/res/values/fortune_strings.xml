@@ -15,6 +15,11 @@
     <string name="charging_control_notification_content_target_reached">Battery is charged</string>
 
     <!-- Strings for PixelPropUtils -->
+    <string name="cert_device" translatable="false"></string>
+    <string name="cert_fp" translatable="false"></string>
+    <string name="cert_model" translatable="false"></string>
+    <string name="cert_spl" translatable="false"></string>
+    <integer name="cert_sdk" translatable="false"></integer>
     <string name="build_device"></string>
     <string name="build_fp"></string>
     <string name="build_model"></string>

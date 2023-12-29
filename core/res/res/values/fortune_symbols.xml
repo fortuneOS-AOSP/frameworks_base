@@ -38,6 +38,11 @@
     <java-symbol type="string" name="charging_control_notification_content_target_reached" />
 
     <!-- PixelPropUtils -->
+    <java-symbol type="string" name="cert_device" />
+    <java-symbol type="string" name="cert_fp" />
+    <java-symbol type="string" name="cert_model" />
+    <java-symbol type="string" name="cert_spl" />
+    <java-symbol type="integer" name="cert_sdk" />
     <java-symbol type="string" name="build_device" />
     <java-symbol type="string" name="build_fp" />
     <java-symbol type="string" name="build_model" />
