@@ -37,14 +37,6 @@
     <java-symbol type="string" name="charging_control_notification_content_target" />
     <java-symbol type="string" name="charging_control_notification_content_target_reached" />
 
-    <!-- PixelPropUtils -->
-    <java-symbol type="string" name="cert_device" />
-    <java-symbol type="string" name="cert_fp" />
-    <java-symbol type="string" name="cert_model" />
-    <java-symbol type="string" name="cert_spl" />
-    <java-symbol type="string" name="cert_sdk" />
-    <java-symbol type="string" name="cert_manufacturer" />
-
     <!-- Light / Regular style fonts -->
     <java-symbol type="string" name="config_lightFontFamily" />
     <java-symbol type="string" name="config_regularFontFamily" />
@@ -58,4 +50,9 @@
     <!-- Status bar DT2S gesture -->
     <java-symbol type="bool" name="config_dt2sGestureAvailable" />
     <java-symbol type="bool" name="config_dt2sGestureEnabledByDefault" />
+
+    <!-- PropImitationHooks -->
+    <java-symbol type="array" name="config_certifiedBuildProperties" />
+    <java-symbol type="string" name="config_stockFingerprint" />
+    <java-symbol type="bool" name="config_spoofasTablet" />
 </resources>

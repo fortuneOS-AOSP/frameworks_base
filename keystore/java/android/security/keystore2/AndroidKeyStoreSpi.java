@@ -48,7 +48,7 @@ import android.system.keystore2.ResponseCode;
 import android.util.Log;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.internal.util.fortune.PixelPropsUtils;
+import com.android.internal.util.PropImitationHooks;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -179,16 +179,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        if (PixelPropsUtils.getIsEnabled()) {
-            if (PixelPropsUtils.getIsFinsky()) {
-                throw new UnsupportedOperationException("Blocking safetynet attestation for finsky");
-            }
-            for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-                if (ste.getClassName().contains("DroidGuard")) {
-                    throw new UnsupportedOperationException("Blocking safetynet attestation");
-                }
-            }
-        }
+        PropImitationHooks.onEngineGetCertificateChain();
 
         KeyEntryResponse response = getKeyMetadata(alias);
 

@@ -13,12 +13,4 @@
     <string name="charging_control_notification_content_limit_reached">Battery is charged to %1$d%%</string>
     <string name="charging_control_notification_content_target">Battery will be fully charged at %1$s</string>
     <string name="charging_control_notification_content_target_reached">Battery is charged</string>
-
-    <!-- Strings for PixelPropUtils -->
-    <string name="cert_device" translatable="false"></string>
-    <string name="cert_fp" translatable="false"></string>
-    <string name="cert_model" translatable="false"></string>
-    <string name="cert_spl" translatable="false"></string>
-    <string name="cert_sdk" translatable="false"></string>
-    <string name="cert_manufacturer" translatable="false"></string>
 </resources>
