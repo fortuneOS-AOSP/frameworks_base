@@ -48,6 +48,7 @@ public class PropImitationHooks {
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PACKAGE_GPHOTOS = "com.google.android.apps.photos";
+    private static final String PACKAGE_PIXEL_LAUNCHER = "com.google.android.apps.nexuslauncher";
 
     private static final String PACKAGE_SETUPWIZARD = "com.google.android.setupwizard";
     private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
@@ -149,6 +150,7 @@ public class PropImitationHooks {
             case PACKAGE_GMS:
             case PACKAGE_SETUPWIZARD:
             case PACKAGE_SUBSCRIPTION_RED:
+            case PACKAGE_PIXEL_LAUNCHER:
             case PACKAGE_VELVET:
                 if (sIsTablet) {
                     dlog("Spoofing Pixel Tablet for: " + packageName + " process: " + processName);
