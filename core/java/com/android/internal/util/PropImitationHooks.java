@@ -81,6 +81,25 @@ public class PropImitationHooks {
             "FINGERPRINT", "google/tangorpro/tangorpro:14/AP2A.240805.005/12025142:user/release-keys"
     );
 
+    private static final Map<String, String> sPixelXLProps = Map.of(
+            "PRODUCT", "marlin",
+            "DEVICE", "marlin",
+            "HARDWARE", "marlin",
+            "MANUFACTURER", "Google",
+            "BRAND", "google",
+            "MODEL", "Pixel XL",
+            "ID", "QP1A.191005.007.A3",
+            "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
+    );
+
+    private static final Set<String> sNexusFeatures = Set.of(
+            "NEXUS_PRELOAD",
+            "nexus_preload",
+            "GOOGLE_BUILD",
+            "GOOGLE_EXPERIENCE",
+            "PIXEL_EXPERIENCE"
+    );
+
     private static final Set<String> sPixelFeatures = Set.of(
             "PIXEL_2017_EXPERIENCE",
             "PIXEL_2017_PRELOAD",
@@ -92,8 +111,7 @@ public class PropImitationHooks {
             "PIXEL_2019_PRELOAD",
             "PIXEL_2020_EXPERIENCE",
             "PIXEL_2020_MIDYEAR_EXPERIENCE",
-            "PIXEL_2021_MIDYEAR_EXPERIENCE",
-            "PIXEL_EXPERIENCE"
+            "PIXEL_2021_MIDYEAR_EXPERIENCE"
     );
 
     private static final Set<String> sTensorFeatures = Set.of(
@@ -110,7 +128,7 @@ public class PropImitationHooks {
     private static volatile String sStockFp, sNetflixModel;
 
     private static volatile String sProcessName;
-    private static volatile boolean sIsPixelDevice, sIsGms, sIsFinsky, sIsPhotos, sIsTablet;
+    private static volatile boolean sIsGms, sIsFinsky, sIsPhotos, sIsTablet;
 
     public static void setProps(Context context) {
         final String packageName = context.getPackageName();
@@ -133,7 +151,6 @@ public class PropImitationHooks {
         sIsTablet = res.getBoolean(R.bool.config_spoofasTablet);
 
         sProcessName = processName;
-        sIsPixelDevice = Build.MANUFACTURER.equals("Google") && Build.MODEL.contains("Pixel");
         sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = packageName.equals(PACKAGE_GPHOTOS);
@@ -169,6 +186,10 @@ public class PropImitationHooks {
                     dlog("Setting stock fingerprint for: " + packageName);
                     setPropValue("FINGERPRINT", sStockFp);;
                 }
+                return;
+            case PACKAGE_GPHOTOS:
+                dlog("Spoofing Pixel XL for Google Photos");
+                setProps(sPixelXLProps);
                 return;
             case PACKAGE_NETFLIX:
                 if (!sNetflixModel.isEmpty()) {
@@ -282,11 +303,15 @@ public class PropImitationHooks {
     }
 
     public static boolean hasSystemFeature(String name, boolean has) {
-        if (sIsPhotos && !sIsPixelDevice && has
-                && (sPixelFeatures.stream().anyMatch(name::contains)
-                || sTensorFeatures.stream().anyMatch(name::contains))) {
-            dlog("Blocked system feature " + name + " for Google Photos");
-            has = false;
+        if (sIsPhotos) {
+            if (has && (sPixelFeatures.stream().anyMatch(name::contains)
+                    || sTensorFeatures.stream().anyMatch(name::contains))) {
+                dlog("Blocked system feature " + name + " for Google Photos");
+                has = false;
+            } else if (!has && sNexusFeatures.stream().anyMatch(name::contains)) {
+                dlog("Enabled system feature " + name + " for Google Photos");
+                has = true;
+            }
         }
         return has;
     }
