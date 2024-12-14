@@ -153,6 +153,7 @@ public class AODTile extends QSTileImpl<BooleanState> implements
         } else {
             state.state = enable ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
         }
+        state.hasLongClickEffect = false;
     }
 
     @Override
